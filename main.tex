@@ -86,7 +86,7 @@
 
 \maketitle
 
-\section{Milestone 1: Regular Varieties}
+\section{Regular Varieties}
 
 There are two (very closely related)
 notions of ``smoothness'' given in Vakil Chatper 12.
@@ -154,13 +154,17 @@ The one we need for this proof is ``regularity''.
 %	the structure map \(X \to k\) is smooth.
 %\end{def}
 
-\section{Milestone 2: Sheaf of Kahler differentials}
+\section{Sheaf of Kahler differentials}
 
 \begin{itemize}
 	\item define the module of kahler differentials
 	\item define the sheaf of kahler differentials
 	\item prove that the conormal exact sequence is right-exact
 \end{itemize}
+
+\section{The conormal (left)-exact sequence}
+
+We will need ideal sheaves for this.
 
 \section{Milestone 3: Regularity implies conormal sequence is left-exact}
 
@@ -170,6 +174,8 @@ Hartshorne's proof, which needs
 * nakayama's lemma (in mathlib)
 * integral schemes
 * a proper closed integral subscheme has codimension at least one
+https://math.stackexchange.com/questions/2372649/nakayamas-lemma-in-theorem-8-17-of-chapter-ii-in-hartshorne
+https://math.stackexchange.com/questions/3327995/some-fine-details-in-the-proof-of-hartshorne-ii-8-17
 
 Vakil's proof, which needs
 * associated primes
@@ -204,10 +210,23 @@ user6's proof:
 
 \section{Milestone 4: Alternate description of the conormal sheaf}
 
-One ingredient we will need is 
-\textit{the restriction of a sheaf to a subscheme}
+\begin{itemize}
+	\item restriction of sheaves
+	\item adjunction of pushforward of sheaves and pullback of sheaves
+	\item ideal sheaves
+	\item ``passing to stalks''
+\end{itemize}
+
+The proof of this is detailed in a nice amount of detail in
+https://math.stackexchange.com/questions/1672117/conormal-bundle-of-cartier-divisors
+
+Note that in the stack exchange article they prove more or less this 
+theorem for an arbitrary subvariety, and the part about divisors
+is only because of the alternate description of divisors as ideal sheaves.
 
 \section{Milestone 5: The adjunction formula}
+
+
 
 % the end goal
 
