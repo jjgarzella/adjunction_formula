@@ -76,8 +76,10 @@
 \newcommand{\Spa}{\operatorname{Spa}}
 
 % custom ops here
+\newcommand{\codim}{\operatorname{codim}}
 
 % custom commands here
+\newcommand{\conormal}{\mathscr{I} / \mathscr{I}^{2}}
 
 \title{A detailed proof of the adjunction formula}
 \author{Jack J Garzella}
@@ -109,6 +111,14 @@ The one we need for this proof is ``regularity''.
 	\(R\) is \textit{regular} if one (equivalently, all)
 	of the conditions from the previous proposition holds.
 \end{defn}
+
+The part that is needed in user6's proof is (b) in the proposition.
+
+\begin{lem}
+	The localization of a regular local ring at (read: away from) a prime 
+	ideal is a regular local ring.
+\end{lem}
+
 
 %TODO: define a regular scheme using this as the local definition
 
@@ -158,43 +168,178 @@ The one we need for this proof is ``regularity''.
 
 \begin{itemize}
 	\item define the module of kahler differentials
+		(Vakil has 3 definitions, we'll need to figure out 
+		how to do this correctly).
+    \item affine conormal exact sequence
+		(algebraic computation using the definition)
 	\item define the sheaf of kahler differentials
-	\item prove that the conormal exact sequence is right-exact
+		(globalizing the previous)
+	\item sheafy conormal exact sequence
+		(globalizing the previous)
 \end{itemize}
 
-\section{The conormal (left)-exact sequence}
 
 We will need ideal sheaves for this.
 
-\section{Milestone 3: Regularity implies conormal sequence is left-exact}
+\section{Noetherian Schemes}
 
-There are a few of this that I know of:
+\begin{defn}
+	Let \(X\) be a scheme. 
+	We say \(X\) is \textit{locally noetherian}
+	if there exists an open affine cover
+	\(\{U_{i} = \Spec A_{i}\}\) such that
+	all \(A_{i}\) are noetherian rings.
+\end{defn}
 
-Hartshorne's proof, which needs
-* nakayama's lemma (in mathlib)
-* integral schemes
-* a proper closed integral subscheme has codimension at least one
-https://math.stackexchange.com/questions/2372649/nakayamas-lemma-in-theorem-8-17-of-chapter-ii-in-hartshorne
-https://math.stackexchange.com/questions/3327995/some-fine-details-in-the-proof-of-hartshorne-ii-8-17
 
-Vakil's proof, which needs
-* associated primes
-* geometric interpretation of associated primes
 
-There are also three other proofs from stack exchange,
-https://math.stackexchange.com/questions/846346/hartshorne-theorem-8-17
 
-Ignacio Barros's proof:
-* passes to stalks
-* needs Hartshorne II.8.7, which should be doable with just 
-   facts about differentials
+\section{Regularity implies conormal sequence is left-exact}
 
-Tomo's proof:
-* Uses the concept of \textit{formally smooth} morphisms
+\begin{thm}
+	[Hartshorne Exercise II.5.7a]
+	Let \(X\) be a locally noetherian scheme, and let
+	\(\mathcal{F}\) be a coherent sheaf. 
+	If the stalk \(\mathcal{F}_{x}\) is a free
+	\(\mathcal{O}_{X,x} \)-module for some point
+	\(x \in X\), then there exists
+	a neighborhood \(U\) containing \(x\) such that
+	\(\mathcal{F}|_{U}\) is free.
+\end{thm}
 
-user6's proof:
-* passes to stalks, uses properties of free modules
-* uses Nakayama's lemma
+\begin{proof}
+	WLOG, we can assume that \(X\) is affine, so 
+	\(X = \Spec A\), and furthermore we can assume
+	\(A\) is noetherian.
+	Indeed, take an open affine noetherian cover 
+	as guarenteed by local noetherianity. 
+	Then \(x\) is contained in some neighborhood
+	\(U = \Spec A\) in the cover. 
+	% this is a (re)definiton of \Spec A, a slight abuse
+	%   of notation
+	If we show the theorem for \(\Spec A\),
+	then we have shown it for \(X\).
+
+	Now, as \(\mathcal{F}\) is a coherent sheaf on 
+	\(A\), \(\mathcal{F} \isom \tilde{M}\) for some
+	finitely generated module \(M\) on \(A\).
+	\(x\), being a point of \(\Spec A\), 
+	is/corresponds to a prime
+	ideal \(\mathfrak{p}\) in \(A\).
+	Now, our assumption about
+	freeness of the stalk says that
+	\(M_{\mathfrak{p}} \isom A_{\mathfrak{p}}^{\oplus n}\) 
+	for some \(n\).
+	Indeed, \(M_{\mathfrak{p}}\) is the stalk of 
+	\(\tilde{M}\) and \(A_{\mathfrak{p}}\) is the local
+	ring of \(\Spec A\) at \(\mathfrak{p}\).
+	Let \(m_{1} , \ldots , m_{n}\) the a 
+	basis / free generating set for \(M_{\mathfrak{p}}\).
+	In other words, \(m_{i}\) is the image 
+	(along
+	some isomorphism \(A_{\mathfrak{p}}^{\oplus n}\)) of
+	\((0, \ldots, 1, \ldots, 0) \in A_{\mathfrak{p}}^{\oplus n}\)
+	where the \(1\) is in the \(i\)-th place.
+	Let \(x_{1}, \ldots, x_{k}\) be a finite generating set
+	for \(M\).
+	
+	Now, we have the following equations in \(M_{\mathfrak{p}}\):
+	\[
+		\frac{x_{i}}{1} = \sum_{j=1}^{n} \frac{a_{ij}}{b_{ij}} m_{j} 
+	.\] 
+	Aside: if \(\frac{x_{i}}{1} = 0\), then all the \(a_{ij}\) are zero
+	and the \(b_{ij}\) are \(1\) and the rest of the proof is
+	not affected.
+
+	Now, we make the following claim: 
+	The \(m_{i}\) generate 
+	
+	% pause here, confusion about what my source is saying.
+
+
+\end{proof}
+
+
+\begin{thm}
+	[Hartshorne II.8.15]
+	Let \(X\) be an irreducible separated scheme of finite type 
+	over an algebraically closed field \(k\).
+	Then \(\Omega_{X / k}\) is a locally free
+	sheaf of rank \(\dim X\) if and only if 
+	\(X\) is regular.
+\end{thm}
+
+
+\begin{thm}
+	[Hartshorne II.8.17]
+	Let \(X\) be a regular variety over \(k\).
+	Let \(W\) be an irreducible closed subscheme 
+	with corresponding sheaf of ideals \(\mathscr{I}\).
+	Then \(W\) is regular if and only if the following
+	two conditions hold:
+	\begin{enumerate}[(1)]
+		\item \(\Omega_{Y / k}\) is locally free
+		\item The conormal exact sequence
+			\[
+			\begin{tikzcd}
+			0 \arrow{r}{} & \conormal \arrow{r}{} & 
+			\Omega_{X / k} \otimes \mathcal{O}_{Y}  \arrow{r}{} & 
+			\Omega_{Y / k} \arrow{r}{} & 0
+			\end{tikzcd}
+			\]
+			is exact.
+	\end{enumerate}
+\end{thm}
+
+\begin{cor}
+	In the situation of the conclusion of the previous theorem, 
+	\(\mathscr{I}\) is locally generated by 
+	\(\codim(W)\) elements.
+\end{cor}
+
+\begin{cor}
+	In the situation of the conclusion of the previous theorem,
+	\(\conormal\) is locally free of rank \(\codim(W)\).
+\end{cor}
+
+
+%There are a few of this that I know of:
+%
+%Hartshorne's proof, which needs
+%* nakayama's lemma (in mathlib)
+%* integral schemes
+%* a proper closed integral subscheme has codimension at least one
+%https://math.stackexchange.com/questions/2372649/nakayamas-lemma-in-theorem-8-17-of-chapter-ii-in-hartshorne
+%https://math.stackexchange.com/questions/3327995/some-fine-details-in-the-proof-of-hartshorne-ii-8-17
+%* also requires Hartshorne II.5.7, Hartshorne II.8.8, Hartshorne II.8.7
+%
+%Vakil's proof, which needs
+%* associated primes
+%* geometric interpretation of associated primes
+%
+%There are also three other proofs from stack exchange,
+%https://math.stackexchange.com/questions/846346/hartshorne-theorem-8-17
+%
+%Ignacio Barros's proof:
+%* passes to stalks
+%* needs Hartshorne II.8.7, which should be doable with just 
+%   facts about differentials
+%
+%Tomo's proof:
+%* Uses the concept of \textit{formally smooth} morphisms
+%
+%user6's proof:
+%* passes to stalks, uses properties of free modules
+%* uses Nakayama's lemma
+%* requires Hartshorne II.5.7, which is proved here:
+%https://dornsife.usc.edu/assets/sites/618/docs/Hartshorne\_Exercises.pdf
+%* this also requires the following theorem:
+%\begin{thm}
+%	Let \(f: M \to M\) be a surjective endomorphism of \(R\)-modules.
+%	Then \(R\) is an isomoprhism.
+%\end{thm}
+%The proof uses Nakayama's lemma, and this is precisely where we need it.
+
 
 % conormal exact sequence
 
@@ -208,7 +353,7 @@ user6's proof:
 %  Then use the universal property integral closure (both schemes are integral)
 %  (probably using integral <==> reduced and irred)
 
-\section{Milestone 4: Alternate description of the conormal sheaf}
+\section{Alternate description of the conormal sheaf}
 
 \begin{itemize}
 	\item restriction of sheaves
@@ -224,9 +369,10 @@ Note that in the stack exchange article they prove more or less this
 theorem for an arbitrary subvariety, and the part about divisors
 is only because of the alternate description of divisors as ideal sheaves.
 
-\section{Milestone 5: The adjunction formula}
+\section{The determinant bundle}
 
 
+\section{The adjunction formula}
 
 % the end goal
 
