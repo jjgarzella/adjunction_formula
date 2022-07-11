@@ -463,44 +463,44 @@ contains a field, but does not contain its residue field?
 
 \section{Regularity implies conormal sequence is left-exact}
 
-\begin{lem}
-	[Pulling back equations along a ring homomorphism]
-	Let \(R, R^{\prime}\) be \(A\)-algebras.
-	Let \(f : R \to R^{\prime}\) be an \(A\)-linear ring homomorphism.
-	Assume that we have a system of equations in \(R^{\prime}\),
-	i.e.
-	\[
-	\sum_{i}^{} a_{ij}r_{i}^{\prime} = 0 
-	\] 
-	for some \(r_{i}^{\prime} \in R^{\prime}\).
-	Assume that each \(r_{i}^{\prime}\) has a preimage,
-	i.e. \(f^{-1}(r_{i}^{\prime}) \neq \emptyset\) 
-	for all \(i\).
-	Then, there exists a simultaneous pullback of
-	the equations,
-	i.e.
-	there exists \(s_{i} \in R\) such that
-	\(f(s_{i}) = r_{i}^{\prime}\),
-	such that
-	\(\sum_{i}^{} a_{ij}s_{i} = 0 \) in \(R\).
-\end{lem}
-
-\begin{proof}
-	Let \(r_{i}\) be a preimage of \(r_{i}^{\prime}\) 
-	in \(R\) (for all \(i\)).
-	Then, we can write
-	\[
-	\sum_{i}^{} a_{ij}r_{i} + k_{i} = 0 
-	\] 
-	for all \(j\), for \(k_{i} \in \Ker f\).
-	Now, the proof is to ``inductively
-	fold the \(k_{i}\) into \(r_{1}\)''.
-	This means that one defines
-	\(s_{1}^{1}\) to be \(r_{1 + }\)
-
-\end{proof}
-
-
+% I think the following is just wrong,
+%   TODO: delete this when the proof of Hartshorne II.5.7 is finished
+%\begin{lem}
+%	[Pulling back equations along a ring homomorphism]
+%	Let \(R, R^{\prime}\) be \(A\)-algebras.
+%	Let \(f : R \to R^{\prime}\) be an \(A\)-linear ring homomorphism.
+%	Assume that we have a system of equations in \(R^{\prime}\),
+%	i.e.
+%	\[
+%	\sum_{i}^{} a_{ij}r_{i}^{\prime} = 0 
+%	\] 
+%	for some \(r_{i}^{\prime} \in R^{\prime}\).
+%	Assume that each \(r_{i}^{\prime}\) has a preimage,
+%	i.e. \(f^{-1}(r_{i}^{\prime}) \neq \emptyset\) 
+%	for all \(i\).
+%	Then, there exists a simultaneous pullback of
+%	the equations,
+%	i.e.
+%	there exists \(s_{i} \in R\) such that
+%	\(f(s_{i}) = r_{i}^{\prime}\),
+%	such that
+%	\(\sum_{i}^{} a_{ij}s_{i} = 0 \) in \(R\).
+%\end{lem}
+%
+%\begin{proof}
+%	Let \(r_{i}\) be a preimage of \(r_{i}^{\prime}\) 
+%	in \(R\) (for all \(i\)).
+%	Then, we can write
+%	\[
+%	\sum_{i}^{} a_{ij}r_{i} + k_{i} = 0 
+%	\] 
+%	for all \(j\), for \(k_{i} \in \Ker f\).
+%	Now, the proof is to ``inductively
+%	fold the \(k_{i}\) into \(r_{1}\)''.
+%	This means that one defines
+%	\(s_{1}^{1}\) to be \(r_{1 + }\)
+%
+%\end{proof}
 
 
 \begin{thm}
@@ -541,7 +541,7 @@ contains a field, but does not contain its residue field?
 	\(\tilde{M}\) and \(A_{\mathfrak{p}}\) is the local
 	ring of \(\Spec A\) at \(\mathfrak{p}\).
 	Let \(m_{1} , \ldots , m_{n}\) the a 
-	basis / free generating set for \(M_{\mathfrak{p}}\).
+	basis/free generating set for \(M_{\mathfrak{p}}\).
 	In other words, \(m_{i}\) is the image 
 	(along
 	some isomorphism \(A_{\mathfrak{p}}^{\oplus n}\)) of
@@ -577,22 +577,78 @@ contains a field, but does not contain its residue field?
 	and the \(b_{ij}\) are \(1\) and the rest of the proof is
 	not affected.
 
-	Let \(b \colonequals \prod_{}^{} b_{ij}\). 
+	Using the characterization of when elements of the localization 
+	are zero (i.e. that they are \(s\)-torsion for some 
+	\(s \in A \smallsetminus \mathfrak{p} \)),
+	we have the equations
+	\[
+	t_{i}\prod_{}^{} b_{ij}
+	\left(x_{i} - \sum_{j}^{} \frac{a_{ij}}{b_{ij}} m^{\prime}_{i}  \right)
+	= 0
+	\] 
+	for some \(t_{i} \in A \smallsetminus \mathfrak{p}\),
+	where the sum takes place in
+	in \(M\) (which is a module over \(A\)).
+	Note that we must have the factor of \(\prod_{}^{} b_{ij} \) as
+	one multiply ``top and bottom'' by this term
+	to put the element \(x_{i} - \sum_{}^{} \frac{a_{ij}}{b_{ij}}m_{i} \) 
+	into the form \(\frac{p}{q}\) with \(p,g \in M\).
+
+	Let \(b \colonequals \prod_{i}^{} t_{i}  \prod_{i,j}^{} b_{ij}\). 
 	We know that the \(\frac{x_{i}}{1}\) generate \(M_{b}\) as an
 	\(A_{b}\)-module by the characterization of elements in the localization
 	as fractions (given an element of \(M {b}\), one has an equation
 	in \(M\) for its numerator, and then one over its denominator 
 	is in \(A_{b}\)).
+	Thus, the equations above and the fact that 
+	\(A \smallsetminus \mathfrak{p}\)-torsion is the 
+	kernel of the localization map show that
+	\(m_{i}^{\prime}\) generate \(M_{b}\). 
 
-
-
-
-	Now, we make the following claim: 
-	The \(m_{i}\) generate 
+	Thus, we have that the following map
+	\begin{align*}
+		A_{b}^{\oplus n} &\longrightarrow M_{b} \\
+		(0,\ldots,0,1,0,\ldots,0) &\longmapsto m_{i}^{\prime}
+	\end{align*}
+	is surjective (where the \(1\) is in the \(i\)-th place).
+	Let the Kernel of the above map be denoted \(K\).
+	We want to consider the exact sequence
+	\[
+	\begin{tikzcd}
+	0 \arrow{r}{} & K \arrow{r}{} & 
+	A_{b}^{\oplus n} \arrow{r}{} & M_{b} \arrow{r}{} & 0
+	\end{tikzcd}
+	.\]
 	
-	% pause here, confusion about what my source is saying.
-
-
+	As \(A\) is noetherian, \(A_{b}\) is noetherian,
+	and thus so is \(A_{b}^{\oplus n}\).
+	Thus, \(K\), which is a submodule of \(a_{b}^{\oplus n}\),
+	is finitely generated, say by 
+	\(k_{1}, \ldots, k_{\ell}\).
+	
+	Now, we apply the localization functor to the above
+	exact sequence. 
+	However, we note that the second (nontrivial) map
+	is indeed the same map as the isomorphism we
+	gave in the first place.
+	Thus, we conclude that \(K_{\mathfrak{p}} = 0\).
+	This means, by the characterization
+	of the kernel of a localization map,
+	that there are \(s_{i} \in A \smallsetminus \mathfrak{p}\) 
+	such that \(s_{i}k_{i} = 0\) in \(A\) for all \(i\).
+	(the same is true if we replace  \(A\) with \(A_{b}\),
+	one can use whichever ring is more convenient).
+	Now, if we let 
+	\(b^{\prime} = b \prod_{i}^{} s_{i} \),
+	then we see that by the equations above
+	and the characterization of the kernel of the localization
+	as torsion, that
+	\(K_{b^{\prime}} = 0\).
+	This means, by the exact sequence above and/or the fact
+	that kernels commute with localization,
+	that \(A_{b^{\prime}}^{\oplus n} \isom M_{b^{\prime}}\),
+	and we have what we want.
+	
 \end{proof}
 
 \begin{thm}
