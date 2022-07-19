@@ -1,3 +1,14 @@
+# Lean project
 *.olean
 /_target
 /leanpkg.path
+
+# TeX auxillary files
+*.tex.swp
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.pdf
+*.synctex.gz
