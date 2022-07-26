@@ -3,6 +3,8 @@ import category_theory.limits.has_limits
 import category_theory.adjunction.basic
 import category_theory.closed.cartesian
 
+import category_theory.limits.preserves.shapes.binary_products
+
 
 set_option pp.universes true
 

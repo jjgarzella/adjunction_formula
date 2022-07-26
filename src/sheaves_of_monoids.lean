@@ -47,6 +47,8 @@ variables (N : Mon_ (Sheaf J (Type max v u)))
 #check (N.X.val.obj (op L))
 #check ((N.mul.val).app (op L))
 
+#check is_iso_iff_bijective
+
 #check ((Sheaf_to_presheaf J (Type (max v u))).obj N.X)
 lemma blah1 : ((Sheaf_to_presheaf J (Type (max v u))).obj N.X) = N.X.val
 := by refl
