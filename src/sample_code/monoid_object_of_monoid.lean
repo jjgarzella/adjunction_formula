@@ -44,7 +44,10 @@ lemma Mon__of_monoid {M : Mon.{u}} : Mon_ (Type u) :=
   exact curried
   --exact (λ ((a,b) : (M × M)), (a*b))
   end,
-  one_mul' := sorry,
+  one_mul' :=
+  begin
+    sorry,
+  end,
   mul_one' := sorry,
   mul_assoc' := sorry,
 }
