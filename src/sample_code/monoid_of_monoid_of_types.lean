@@ -175,7 +175,13 @@ by { ext1; simpa }
 --  refl,
 --end
 
+lemma rearrange_comp (a b c d e : Type u) (f : a ⟶ b) (g : b ⟶ c) (h : c ⟶ d) (j : d ⟶ e) :
+(f ≫ g) ≫ h ≫ j = (f ≫ (g ≫ h)) ≫ j :=
+by simp
 
+lemma rearrange_comp_2  (a b c d e : Type u) (f : a ⟶ b) (g : b ⟶ c) (h : c ⟶ d) (j : d ⟶ e) :
+(f ≫ g ≫ h) ≫ j = (f ≫ g) ≫ h ≫ j :=
+by simp
 
 lemma monoid_of_Mon__Type (M : Mon_ (Type u)) : monoid M.X :=
 {
@@ -228,7 +234,7 @@ lemma monoid_of_Mon__Type (M : Mon_ (Type u)) : monoid M.X :=
 
 
     have comm_rectangle_terminal_iso:
-      as_hom (prod.map (terminal_iso.symm.hom) (𝟙 M.X)) ≫
+      as_hom (prod.map (terminal_iso.inv) (𝟙 M.X)) ≫
       (binary_product_iso _ _).symm.hom =
       (binary_product_iso _ _).symm.hom ≫
       ((terminal_iso.symm.hom) ⊗ (𝟙 M.X)), -- you have to have the outer parens
@@ -241,7 +247,7 @@ lemma monoid_of_Mon__Type (M : Mon_ (Type u)) : monoid M.X :=
       (M.one ⊗ (𝟙 M.X)), -- you have to have the outer parens
       by { simp, apply prod_map_bpo_commutes },
 
-    have rearrage_composition :
+    have rearrange_composition :
       (as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
       as_hom (prod.map M.one (𝟙 M.X))) ≫
       (binary_product_iso M.X M.X).symm.hom ≫
@@ -251,12 +257,44 @@ lemma monoid_of_Mon__Type (M : Mon_ (Type u)) : monoid M.X :=
       (binary_product_iso M.X M.X).symm.hom)) ≫
       M.mul,
       begin
+        by apply rearrange_comp,
         -- simp,
-        -- simp,
-        sorry,
+        -- `simp` should work here, at the time of writing this comment it seems to time out
       end,
 
+    have rearrange_composition_2 :
+      ((as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
+      (binary_product_iso (𝟙_ (Type u)) M.X).symm.hom ≫
+      (M.one ⊗ 𝟙 M.X)) ≫
+      M.mul) =
+      (as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
+      (binary_product_iso (𝟙_ (Type u)) M.X).symm.hom) ≫
+      (M.one ⊗ 𝟙 M.X) ≫
+      M.mul,
+    by apply rearrange_comp_2,
 
+    have same_morphism :
+    (binary_product_iso (⊤_ Type u) M.X).symm.hom = (binary_product_iso (𝟙_ (Type u)) M.X).symm.hom,
+    by refl,
+
+
+
+
+
+    conv_lhs { rw [rearrange_composition] },
+    conv_lhs { rw [comm_rectangle_prod_map] },
+    conv_lhs { rw [rearrange_composition_2] },
+    rw [←same_morphism],
+    conv_lhs { rw [comm_rectangle_terminal_iso] },
+    conv_lhs { rw [om] },
+    simp [punit_prod_iso],
+    -- exact (punit_prod_iso M.X).hom,
+
+
+    -- rw [←rearrange_comp],
+    -- conv_lhs { rw [comm_rectangle_terminal_iso] },
+
+    -- conv_lhs { rw [rearrange_composition] }
 
     -- rw [comm_rectangle_prod_map],
     -- have morph_version :
@@ -273,7 +311,7 @@ lemma monoid_of_Mon__Type (M : Mon_ (Type u)) : monoid M.X :=
     -- have punit_prod_iso : ((punit : Type u) × M.X) ≅ ((𝟙_ (Type u)) ⨯ M.X)
     --   := (binary_product_iso _ _).symm ≪≫ tensor_iso terminal_iso.symm (iso.refl _),
 
-    sorry,
+    -- sorry,
 
     -- simp [punit_prod_iso, binary_coproduct_iso, M.one_mul],
 
