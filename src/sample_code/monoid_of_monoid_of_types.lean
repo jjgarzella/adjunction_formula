@@ -28,125 +28,139 @@ instance has_one_of_Mon__Type (M : Mon_ (Type u)) : has_one M.X :=
 instance has_mul_of_Mon__Type (M : Mon_ (Type u)) : has_mul M.X :=
 { mul := (λ a b, ((binary_product_iso _ _).symm.hom ≫ M.mul) (a,b)) }
 
-@[simp, reassoc]
-lemma binary_product_iso_limits_fst_eq_fst (A B : Type u) :
-  (binary_product_iso A B).inv ≫ limits.prod.fst = prod.fst :=
-limits.prod.lift_fst _ _
+-- @[simp, reassoc]
+-- lemma binary_product_iso_limits_fst_eq_fst (A B : Type u) :
+--   (binary_product_iso A B).inv ≫ limits.prod.fst = prod.fst :=
+-- limits.prod.lift_fst _ _
 
-@[simp, reassoc]
-lemma binary_product_iso_limits_snd_eq_snd (A B : Type u) :
-  (binary_product_iso A B).inv ≫ limits.prod.snd = prod.snd :=
-limits.prod.lift_snd _ _
+-- @[simp, reassoc]
+-- lemma binary_product_iso_limits_snd_eq_snd (A B : Type u) :
+--   (binary_product_iso A B).inv ≫ limits.prod.snd = prod.snd :=
+-- limits.prod.lift_snd _ _
 
-def punit_prod_iso (A : Type u) : (punit : (Type u)) × A ≅ A :=
-  (binary_product_iso _ _).symm ≪≫
-  tensor_iso terminal_iso.symm (iso.refl _) ≪≫
-  (λ_ A)
+-- def punit_prod_iso (A : Type u) : (punit : (Type u)) × A ≅ A :=
+--   (binary_product_iso _ _).symm ≪≫
+--   tensor_iso terminal_iso.symm (iso.refl _) ≪≫
+--   (λ_ A)
 
-def punit_morph_prod (M : Mon_ (Type u)) : (punit : Type u) × M.X ⟶ M.X × M.X :=
-  (binary_product_iso _ _).symm.hom ≫
-  (tensor_iso terminal_iso.symm (iso.refl _)).hom ≫
-  (M.one ⊗ (𝟙 M.X)) ≫
-  (binary_product_iso _ _).hom
+-- def punit_morph_prod (M : Mon_ (Type u)) : (punit : Type u) × M.X ⟶ M.X × M.X :=
+--   (binary_product_iso _ _).symm.hom ≫
+--   (tensor_iso terminal_iso.symm (iso.refl _)).hom ≫
+--   (M.one ⊗ (𝟙 M.X)) ≫
+--   (binary_product_iso _ _).hom
 
-lemma prod_map_bpo_commutes (A B C D : Type u) (f : A ⟶ C) (g : B ⟶ D) :
-as_hom (prod.map f g) ≫
-(binary_product_iso C D).inv =
-(binary_product_iso A B).inv ≫
-limits.prod.map f g :=
-by { ext1; simpa }
+-- lemma prod_map_bpo_commutes (A B C D : Type u) (f : A ⟶ C) (g : B ⟶ D) :
+-- as_hom (prod.map f g) ≫
+-- (binary_product_iso C D).inv =
+-- (binary_product_iso A B).inv ≫
+-- limits.prod.map f g :=
+-- by { ext1; simpa }
 
-lemma rearrange_comp (a b c d e : Type u) (f : a ⟶ b) (g : b ⟶ c) (h : c ⟶ d) (j : d ⟶ e) :
-(f ≫ g) ≫ h ≫ j = (f ≫ (g ≫ h)) ≫ j :=
-by simp
+-- lemma rearrange_comp (a b c d e : Type u) (f : a ⟶ b) (g : b ⟶ c) (h : c ⟶ d) (j : d ⟶ e) :
+-- (f ≫ g) ≫ h ≫ j = (f ≫ (g ≫ h)) ≫ j :=
+-- by simp
 
-lemma rearrange_comp_2  (a b c d e : Type u) (f : a ⟶ b) (g : b ⟶ c) (h : c ⟶ d) (j : d ⟶ e) :
-(f ≫ g ≫ h) ≫ j = (f ≫ g) ≫ h ≫ j :=
-by simp
+-- lemma rearrange_comp_2  (a b c d e : Type u) (f : a ⟶ b) (g : b ⟶ c) (h : c ⟶ d) (j : d ⟶ e) :
+-- (f ≫ g ≫ h) ≫ j = (f ≫ g) ≫ h ≫ j :=
+-- by simp
 
 lemma one_mul_of_Mon__Type (M : Mon_ (Type u)) : ∀ (a : M.X), 1 * a = a :=
 begin
-  have mul := M.mul,
-  let om := M.one_mul,
-
   intro a,
-  have morph_one_a : (prod.map (terminal_iso.symm.hom ≫ M.one) (𝟙 M.X)) (punit.star,a) =
-    ((terminal_iso.symm.hom ≫ M.one) punit.star, a),
-    by simp,
-  have morph_one_comp_a :
-    (as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
-    as_hom (prod.map M.one (𝟙 M.X))) (punit.star, a) =
-    ((terminal_iso.symm.hom ≫ M.one) punit.star, a),
-    begin
-      simp only [category_theory.types_comp_apply, category_theory.iso.symm_hom],
-      refl,
-    end,
+  dsimp [has_mul.mul, has_one.one],
+  have : (binary_product_iso _ _).inv ≫ (M.one ⊗ 𝟙 M.X) ≫ M.mul =
+    (binary_product_iso _ _).inv ≫ (λ_ M.X).hom,
+    { rw M.one_mul },
+  convert _root_.congr_fun this (terminal_iso.inv punit.star, a),
+  { have : function.injective (binary_product_iso M.X M.X).hom,
+    { rw ← mono_iff_injective, apply_instance },
+    apply this,
+    ext; simp [elementwise_of (limits.prod.map_fst M.one (𝟙 M.X)),
+      elementwise_of (limits.prod.map_snd M.one (𝟙 M.X))] },
+  { simp },
+end
 
-  have comm_rectangle_terminal_iso:
-    as_hom (prod.map (terminal_iso.inv) (𝟙 M.X)) ≫
-    (binary_product_iso _ _).symm.hom =
-    (binary_product_iso _ _).symm.hom ≫
-    ((terminal_iso.symm.hom) ⊗ (𝟙 M.X)), -- you have to have the outer parens
-    by { simp, apply prod_map_bpo_commutes },
-
-  have comm_rectangle_prod_map :
-    as_hom (prod.map M.one (𝟙 M.X)) ≫
-    (binary_product_iso _ _).symm.hom =
-    (binary_product_iso _ _).symm.hom ≫
-    (M.one ⊗ (𝟙 M.X)), -- you have to have the outer parens
-    by { simp, apply prod_map_bpo_commutes },
-
-  have rearrange_composition :
-    (as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
-    as_hom (prod.map M.one (𝟙 M.X))) ≫
-    (binary_product_iso M.X M.X).symm.hom ≫
-    M.mul =
-    (as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
-    (as_hom (prod.map M.one (𝟙 M.X)) ≫
-    (binary_product_iso M.X M.X).symm.hom)) ≫
-    M.mul,
-    begin
-      by apply rearrange_comp,
+  -- have mul := M.mul,
+  -- let om := M.one_mul,
+--
+  -- intro a,
+  -- have morph_one_a : (prod.map (terminal_iso.symm.hom ≫ M.one) (𝟙 M.X)) (punit.star,a) =
+    -- ((terminal_iso.symm.hom ≫ M.one) punit.star, a),
+    -- by simp,
+  -- have morph_one_comp_a :
+    -- (as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
+    -- as_hom (prod.map M.one (𝟙 M.X))) (punit.star, a) =
+    -- ((terminal_iso.symm.hom ≫ M.one) punit.star, a),
+    -- begin
+      -- simp only [category_theory.types_comp_apply, category_theory.iso.symm_hom],
+      -- refl,
+    -- end,
+--
+  -- have comm_rectangle_terminal_iso:
+    -- as_hom (prod.map (terminal_iso.inv) (𝟙 M.X)) ≫
+    -- (binary_product_iso _ _).symm.hom =
+    -- (binary_product_iso _ _).symm.hom ≫
+    -- ((terminal_iso.symm.hom) ⊗ (𝟙 M.X)), -- you have to have the outer parens
+    -- by { simp, apply prod_map_bpo_commutes },
+--
+  -- have comm_rectangle_prod_map :
+    -- as_hom (prod.map M.one (𝟙 M.X)) ≫
+    -- (binary_product_iso _ _).symm.hom =
+    -- (binary_product_iso _ _).symm.hom ≫
+    -- (M.one ⊗ (𝟙 M.X)), -- you have to have the outer parens
+    -- by { simp, apply prod_map_bpo_commutes },
+--
+  -- have rearrange_composition :
+    -- (as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
+    -- as_hom (prod.map M.one (𝟙 M.X))) ≫
+    -- (binary_product_iso M.X M.X).symm.hom ≫
+    -- M.mul =
+    -- (as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
+    -- (as_hom (prod.map M.one (𝟙 M.X)) ≫
+    -- (binary_product_iso M.X M.X).symm.hom)) ≫
+    -- M.mul,
+    -- begin
+      -- by apply rearrange_comp,
       -- simp,
       -- `simp` should work here, at the time of writing this comment it seems to time out
-    end,
-
-  have rearrange_composition_2 :
-    ((as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
-    (binary_product_iso (𝟙_ (Type u)) M.X).symm.hom ≫
-    (M.one ⊗ 𝟙 M.X)) ≫
-    M.mul) =
-    (as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
-    (binary_product_iso (𝟙_ (Type u)) M.X).symm.hom) ≫
-    (M.one ⊗ 𝟙 M.X) ≫
-    M.mul,
-    by apply rearrange_comp_2,
-
-  have same_morphism :
-    (binary_product_iso (⊤_ Type u) M.X).symm.hom = (binary_product_iso (𝟙_ (Type u)) M.X).symm.hom,
-    by refl,
-
-  have ppo_equality :
-    (((binary_product_iso punit M.X).symm.hom ≫ (terminal_iso.symm.hom ⊗ 𝟙 M.X)) ≫ (λ_ M.X).hom)
-    = prod.snd,
-    by simp,
-
-  unfold has_mul.mul,
-  unfold has_one.one,
-  rw [←morph_one_comp_a],
-  rw [←(types_comp_apply (as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
-                         as_hom (prod.map M.one (𝟙 M.X)))
-                         ((binary_product_iso M.X M.X).symm.hom ≫
-                         M.mul))],
-
-  rw [rearrange_composition],
-  rw [comm_rectangle_prod_map],
-  rw [rearrange_composition_2],
-  rw [←same_morphism],
-  rw [comm_rectangle_terminal_iso],
-  rw [om],
-  rw [ppo_equality],
-end
+    -- end,
+--
+  -- have rearrange_composition_2 :
+    -- ((as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
+    -- (binary_product_iso (𝟙_ (Type u)) M.X).symm.hom ≫
+    -- (M.one ⊗ 𝟙 M.X)) ≫
+    -- M.mul) =
+    -- (as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
+    -- (binary_product_iso (𝟙_ (Type u)) M.X).symm.hom) ≫
+    -- (M.one ⊗ 𝟙 M.X) ≫
+    -- M.mul,
+    -- by apply rearrange_comp_2,
+--
+  -- have same_morphism :
+    -- (binary_product_iso (⊤_ Type u) M.X).symm.hom = (binary_product_iso (𝟙_ (Type u)) M.X).symm.hom,
+    -- by refl,
+--
+  -- have ppo_equality :
+    -- (((binary_product_iso punit M.X).symm.hom ≫ (terminal_iso.symm.hom ⊗ 𝟙 M.X)) ≫ (λ_ M.X).hom)
+    -- = prod.snd,
+    -- by simp,
+--
+  -- unfold has_mul.mul,
+  -- unfold has_one.one,
+  -- rw [←morph_one_comp_a],
+  -- rw [←(types_comp_apply (as_hom (prod.map terminal_iso.inv (𝟙 M.X)) ≫
+                        --  as_hom (prod.map M.one (𝟙 M.X)))
+                        --  ((binary_product_iso M.X M.X).symm.hom ≫
+                        --  M.mul))],
+--
+  -- rw [rearrange_composition],
+  -- rw [comm_rectangle_prod_map],
+  -- rw [rearrange_composition_2],
+  -- rw [←same_morphism],
+  -- rw [comm_rectangle_terminal_iso],
+  -- rw [om],
+  -- rw [ppo_equality],
+-- end
 
 -- lemma monoid_of_Mon__Type (M : Mon_ (Type u)) : monoid M.X :=
 -- {
